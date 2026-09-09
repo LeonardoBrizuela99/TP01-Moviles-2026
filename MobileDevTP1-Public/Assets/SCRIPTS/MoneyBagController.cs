@@ -15,7 +15,11 @@ public class MoneyBagController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("hubo una colision");
-        Destroy(gameObject);
+        if(other.tag=="Player")
+        {
+             Debug.Log("hubo una colision");
+             Destroy(gameObject);
+
+        }
     }
 }

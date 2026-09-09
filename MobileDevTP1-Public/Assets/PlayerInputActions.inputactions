@@ -134,7 +134,7 @@
             "id": "640b593c-6071-446e-ab0f-d12bd751f5e3",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "step",
                     "type": "Value",
                     "id": "16e04036-93ea-4f12-b7f1-321da9d6bfaf",
                     "expectedControlType": "Vector2",
@@ -151,7 +151,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -162,7 +162,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -173,7 +173,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -184,7 +184,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -195,7 +195,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -206,7 +206,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -217,7 +217,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -228,7 +228,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -239,7 +239,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -250,7 +250,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -261,7 +261,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "step",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
