@@ -1,14 +1,15 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class BankMinigame : MonoBehaviour
 {
-   
-    private Vector2 playerMovement;
-    private float money = 0;
-    private bool isCorrect;
-    private int steps = 0;
 
+    [SerializeField] private Vector2 playerMovement;
+    [SerializeField] private float money = 0;
+    [SerializeField] private bool isCorrect;
+    [SerializeField] private int steps = 0;
+    [SerializeField] private Animator animator;
     void Start()
     {
         bool isCorrect = false;
@@ -22,31 +23,30 @@ public class BankMinigame : MonoBehaviour
         {
             Debug.Log("left");
             steps++;
+            animator.SetInteger("Steps", 1);
             Debug.Log(steps);
         }
         if (playerMovement.x > 0&&steps==2)
         {
             Debug.Log("right");
             steps++;
+            animator.SetInteger("Steps", 3);
             Debug.Log(steps);
         }
         if (playerMovement.y < 0&&steps==1)
         {
             Debug.Log("Down");
             steps++;
+            animator.SetInteger("Steps", 2);
             Debug.Log(steps);
         }
         if (steps==3)
         {
             steps = 0;
+            StartCoroutine(WaitForReset());
         }
     }
 
-    void FixedUpdate()
-    {
-
-      
-    }
 
     private void OnStep(InputValue action)
     {
@@ -54,5 +54,12 @@ public class BankMinigame : MonoBehaviour
         playerMovement = value;
         // Debug.Log(value);
     }
-  
+    private IEnumerator WaitForReset()
+    {
+
+        yield return new WaitForSeconds(1.0f);
+        animator.SetInteger("Steps", 0);
+        steps = 0;
+    }
+
 }
