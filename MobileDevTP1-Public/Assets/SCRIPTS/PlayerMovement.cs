@@ -1,22 +1,29 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MovimientoJugador : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public float velocidad = 5f;
     private Rigidbody rb;
     private Vector3 direccionMovimiento;
     private Vector2 playerMovement;
     private float money = 0;
+    public int moneycount = 0;
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag=="MoneyBag")
+        if (moneycount<=3)
         {
-            money += 100;
-            Debug.Log(money);
+            if (other.tag == "MoneyBag")
+            {
+                moneycount++;
+                money += 100;
+                Debug.Log(money);
+                Debug.Log(moneycount);
+            }
         }
-        
+
     }
     void Start()
     {
@@ -26,8 +33,9 @@ public class MovimientoJugador : MonoBehaviour
 
     void Update()
     {
-      
+
         direccionMovimiento = new Vector3(playerMovement.x, 0f, playerMovement.y);
+        
     }
 
     void FixedUpdate()
