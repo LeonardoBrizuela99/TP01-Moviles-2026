@@ -15,6 +15,8 @@ public class GameEvents : MonoBehaviour
 
     public event Action onMinigameTriggerEnter;
     public event Action onMinigameTriggerExit;
+    public event Action onScoreTimerFinish;
+   // public event Action ScoreScreenExit;
     public void OnMinigameTriggerEnter()
     {
         if (onMinigameTriggerEnter != null)
@@ -28,6 +30,14 @@ public class GameEvents : MonoBehaviour
         if (onMinigameTriggerExit != null)
         {
             onMinigameTriggerExit.Invoke();
+        }
+    }
+
+    public void OnScoreScreenEnter()
+    {
+        if (onScoreTimerFinish != null)
+        {
+            onScoreTimerFinish.Invoke();
         }
     }
 }

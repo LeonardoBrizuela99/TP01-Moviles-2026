@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private Vector3 direccionMovimiento;
     private Vector2 playerMovement;
-    private float money = 0;
+    public float money = 0;
     public int moneycount = 0;
 
 
