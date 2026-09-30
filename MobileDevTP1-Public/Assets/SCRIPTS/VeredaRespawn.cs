@@ -29,7 +29,7 @@ public class VeredaRespawn : MonoBehaviour
 	{
 		if(collision.gameObject.tag == PlayerTag)
 		{
-			collision.gameObject.GetComponent<Respawn>().Respawnear();
+			//collision.gameObject.GetComponent<Respawn>().Respawnear();
 		}
 	}
 	
