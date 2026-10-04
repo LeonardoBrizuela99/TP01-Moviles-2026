@@ -13,8 +13,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 playerMovement;
     public float money = 0;
     public int moneycount = 0;
-    //public onGas=0;
     [SerializeField] private SteeringWheel wheel;
+    [SerializeField] private PedalButton botonGas;
+    [SerializeField] private PedalButton botonFreno;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -37,8 +38,12 @@ public class PlayerMovement : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 #if ANDROID_BUILD
         wheel.gameObject.SetActive(true);
+        botonGas.gameObject.SetActive(true);
+        botonFreno.gameObject.SetActive(true);
 #else
         wheel.gameObject.SetActive(false);
+        botonGas.gameObject.SetActive(false);
+        botonFreno.gameObject.SetActive(false);
 #endif
     }
 
@@ -47,7 +52,9 @@ public class PlayerMovement : MonoBehaviour
 
       
 #if ANDROID_BUILD
-        direccionMovimiento = new Vector3(wheel.TurnDir, 0f, 1f);
+        float gas = botonGas.Pressed ? 1f : 0f;
+        float freno = botonFreno.Pressed ? -1f : 0f;
+        direccionMovimiento = new Vector3(wheel.TurnDir, 0f, gas + freno);
 #else
         direccionMovimiento = new Vector3(playerMovement.x, 0f, playerMovement.y);
 #endif
@@ -56,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+       
         float objetivo = direccionMovimiento.z * velocidad;
         if (direccionMovimiento.z < 0f) objetivo *= 0.5f;
         float cambio = direccionMovimiento.z == 0f ? desaceleracion : aceleracion;
