@@ -897,7 +897,7 @@ PlayerSettings:
     Android: ANDROID_BUILD
   additionalCompilerArguments:
     Standalone:
-    - WINDOWS_BUILD
+    - -define:WINDOWS_BUILD
   platformArchitecture: {}
   scriptingBackend:
     Android: 0
