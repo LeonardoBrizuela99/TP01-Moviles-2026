@@ -12,9 +12,31 @@ public class BankMinigame : MonoBehaviour
     [SerializeField] private int steps = 0;
     [SerializeField] private Animator animator;
     [SerializeField] private PlayerMovement truck;
-    
+    [SerializeField] private PedalButton botonIzquierda;
+    [SerializeField] private PedalButton botonAbajo;
+    [SerializeField] private PedalButton botonDerecha;
+
+    void Start()
+    {
+#if ANDROID_BUILD
+        botonIzquierda.gameObject.SetActive(true);
+        botonAbajo.gameObject.SetActive(true);
+        botonDerecha.gameObject.SetActive(true);
+#else
+        botonIzquierda.gameObject.SetActive(false);
+        botonAbajo.gameObject.SetActive(false);
+        botonDerecha.gameObject.SetActive(false);
+#endif
+    }
+
     void Update()
     {
+#if ANDROID_BUILD
+        float x = (botonDerecha.Pressed ? 1f : 0f) - (botonIzquierda.Pressed ? 1f : 0f);
+        float y = botonAbajo.Pressed ? -1f : 0f;
+        playerMovement = new Vector2(x, y);
+#endif
+
         if (truck.moneycount > 0)
         {
             if (playerMovement.x < 0 && steps == 0)
@@ -39,7 +61,7 @@ public class BankMinigame : MonoBehaviour
                 steps++;
                 animator.SetInteger("Steps", 2);
                 Debug.Log(steps);
-           
+
             }
             if (steps == 3)
             {
@@ -50,7 +72,7 @@ public class BankMinigame : MonoBehaviour
         else
         {
             GameEvents.current.OnMinigameTriggerExit();
-        }    
+        }
     }
 
     private void OnStep(InputValue action)
