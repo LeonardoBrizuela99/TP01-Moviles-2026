@@ -13,23 +13,24 @@ public class GameEvents : MonoBehaviour
         current = this;
     }
 
-    public event Action onMinigameTriggerEnter;
-    public event Action onMinigameTriggerExit;
+  
+    public event Action<PlayerMovement> onMinigameTriggerEnter;
+    public event Action<PlayerMovement> onMinigameTriggerExit;
     public event Action onScoreTimerFinish;
-   // public event Action ScoreScreenExit;
-    public void OnMinigameTriggerEnter()
+    // public event Action ScoreScreenExit;
+    public void OnMinigameTriggerEnter(PlayerMovement player)
     {
         if (onMinigameTriggerEnter != null)
         {
-            onMinigameTriggerEnter.Invoke();
+            onMinigameTriggerEnter.Invoke(player);
         }
     }
 
-    public void OnMinigameTriggerExit()
+    public void OnMinigameTriggerExit(PlayerMovement player)
     {
         if (onMinigameTriggerExit != null)
         {
-            onMinigameTriggerExit.Invoke();
+            onMinigameTriggerExit.Invoke(player);
         }
     }
 

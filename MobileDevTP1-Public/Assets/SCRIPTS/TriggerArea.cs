@@ -8,11 +8,17 @@ public class TriggerArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameEvents.current.OnMinigameTriggerEnter();
+        PlayerMovement player = other.GetComponentInParent<PlayerMovement>();
+        if (player == null) return;
+
+        GameEvents.current.OnMinigameTriggerEnter(player);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        GameEvents.current.OnMinigameTriggerExit();
+        PlayerMovement player = other.GetComponentInParent<PlayerMovement>();
+        if (player == null) return;
+
+        GameEvents.current.OnMinigameTriggerExit(player);
     }
 }

@@ -1,11 +1,9 @@
 using System.Collections;
-using System.Data.SqlTypes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class BankMinigame : MonoBehaviour
 {
-
     [SerializeField] private Vector2 playerMovement;
     [SerializeField] private float money = 0;
     [SerializeField] private bool isCorrect;
@@ -15,6 +13,13 @@ public class BankMinigame : MonoBehaviour
     [SerializeField] private PedalButton botonIzquierda;
     [SerializeField] private PedalButton botonAbajo;
     [SerializeField] private PedalButton botonDerecha;
+
+
+    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private string actionName = "Step";
+
+    private InputAction stepAction;
+    private bool closed = false;
 
     void Start()
     {
@@ -29,39 +34,44 @@ public class BankMinigame : MonoBehaviour
 #endif
     }
 
+    void OnEnable()
+    {
+        closed = false;
+        steps = 0;
+        if (animator != null) animator.SetInteger("Steps", 0);
+
+        if (playerInput != null)
+            stepAction = playerInput.actions.FindAction(actionName);
+    }
+
     void Update()
     {
 #if ANDROID_BUILD
         float x = (botonDerecha.Pressed ? 1f : 0f) - (botonIzquierda.Pressed ? 1f : 0f);
         float y = botonAbajo.Pressed ? -1f : 0f;
         playerMovement = new Vector2(x, y);
+#else
+        if (stepAction != null)
+            playerMovement = stepAction.ReadValue<Vector2>();
 #endif
 
         if (truck.moneycount > 0)
         {
             if (playerMovement.x < 0 && steps == 0)
             {
-                Debug.Log("left");
                 steps++;
                 animator.SetInteger("Steps", 1);
-                Debug.Log(steps);
-            }
-            if (playerMovement.x > 0 && steps == 2)
-            {
-                Debug.Log("right");
-                steps++;
-                animator.SetInteger("Steps", 3);
-                Debug.Log(steps);
-                truck.moneycount--;
-                Debug.Log(truck.moneycount);
             }
             if (playerMovement.y < 0 && steps == 1)
             {
-                Debug.Log("Down");
                 steps++;
                 animator.SetInteger("Steps", 2);
-                Debug.Log(steps);
-
+            }
+            if (playerMovement.x > 0 && steps == 2)
+            {
+                steps++;
+                animator.SetInteger("Steps", 3);
+                truck.moneycount--;
             }
             if (steps == 3)
             {
@@ -69,24 +79,23 @@ public class BankMinigame : MonoBehaviour
                 StartCoroutine(WaitForReset());
             }
         }
-        else
+        else if (!closed)
         {
-            GameEvents.current.OnMinigameTriggerExit();
+            closed = true;
+            GameEvents.current.OnMinigameTriggerExit(truck);
         }
     }
 
+
     private void OnStep(InputValue action)
     {
-        Vector2 value = action.Get<Vector2>();
-        playerMovement = value;
-        // Debug.Log(value);
+        playerMovement = action.Get<Vector2>();
     }
+
     private IEnumerator WaitForReset()
     {
-
         yield return new WaitForSeconds(1.0f);
         animator.SetInteger("Steps", 0);
         steps = 0;
     }
-
 }

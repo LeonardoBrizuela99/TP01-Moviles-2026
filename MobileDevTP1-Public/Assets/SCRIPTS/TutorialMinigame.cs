@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class TutorialMinigame : MonoBehaviour
 {
@@ -10,16 +11,36 @@ public class TutorialMinigame : MonoBehaviour
     [SerializeField] private bool isCorrect;
     [SerializeField] private int steps = 0;
     [SerializeField] private Animator animator;
+    [SerializeField] private PedalButton botonIzquierda;
+    [SerializeField] private PedalButton botonAbajo;
+    [SerializeField] private PedalButton botonDerecha;
+    [SerializeField] private float delayAfterFinish = 1.5f;
+    [SerializeField] private string fallbackScene = "Gameplay";
 
-   
+    private bool finished = false;
+
+
     void Start()
     {
         bool isCorrect = false;
 
+       
+#if ANDROID_BUILD
+        SetButtons(true);
+#else
+        SetButtons(false);
+#endif
     }
 
     void Update()
     {
+        if (finished) return;
+
+#if ANDROID_BUILD
+        float x = (botonDerecha.Pressed ? 1f : 0f) - (botonIzquierda.Pressed ? 1f : 0f);
+        float y = botonAbajo.Pressed ? -1f : 0f;
+        playerMovement = new Vector2(x, y);
+#endif
 
         if (playerMovement.x < 0 && steps == 0)
         {
@@ -44,8 +65,9 @@ public class TutorialMinigame : MonoBehaviour
         }
         if (steps == 3)
         {
-            steps = 0;
-            StartCoroutine(WaitForReset());
+            
+            finished = true;
+            StartCoroutine(FinishTutorial());
         }
     }
 
@@ -56,12 +78,28 @@ public class TutorialMinigame : MonoBehaviour
         playerMovement = value;
         // Debug.Log(value);
     }
-    private IEnumerator WaitForReset()
-    {
 
-        yield return new WaitForSeconds(1.0f);
-        animator.SetInteger("Steps", 0);
-        steps = 0;
+    private void SetButtons(bool active)
+    {
+        if (botonIzquierda != null) botonIzquierda.gameObject.SetActive(active);
+        if (botonAbajo != null) botonAbajo.gameObject.SetActive(active);
+        if (botonDerecha != null) botonDerecha.gameObject.SetActive(active);
+    }
+
+    private IEnumerator FinishTutorial()
+    {
+       
+        yield return new WaitForSeconds(delayAfterFinish);
+
+        if (GameModeManager.Instance != null)
+        {
+            GameModeManager.Instance.FinishTutorial();
+        }
+        else
+        {
+           
+            SceneManager.LoadScene(fallbackScene);
+        }
     }
 
 }

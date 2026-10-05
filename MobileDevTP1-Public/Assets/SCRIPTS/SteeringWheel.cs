@@ -41,10 +41,9 @@ public class SteeringWheel : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         if (isHeld)
         {
-            Vector2 unitCoord = GetNormalizedPoint(activeScreenPosition, activeCamera);
-            Vector2 fromCenter = unitCoord - new Vector2(0.5f, 0.5f);
+            Vector2 fromCenter = GetFromWheelCenter(activeScreenPosition, activeCamera);
 
-            if (fromCenter.sqrMagnitude < deadZoneRadius * deadZoneRadius)
+            if (fromCenter.magnitude < deadZoneRadius * visualWheel.rect.width)
             {
                 return;
             }
@@ -53,14 +52,14 @@ public class SteeringWheel : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             visualWheel.localRotation = Quaternion.Euler(0f, 0f, angle);
         }
 
-        // Local space, the canvas follows the truck camera so world axes change as the truck turns
+
         TurnDir = (visualWheel.localRotation * Vector3.up).x;
     }
 
-    private Vector2 GetNormalizedPoint(Vector2 screenPos, Camera cam)
+    private Vector2 GetFromWheelCenter(Vector2 screenPos, Camera cam)
     {
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(hitArea, screenPos, cam, out Vector2 localPoint);
-        Rect rect = hitArea.rect;
-        return new Vector2((localPoint.x - rect.x) / rect.width, (localPoint.y - rect.y) / rect.height);
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(hitArea, screenPos, cam, out Vector3 worldPoint);
+        Vector3 local = hitArea.InverseTransformVector(worldPoint - visualWheel.position);
+        return new Vector2(local.x, local.y);
     }
 }
